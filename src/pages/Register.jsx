@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import './SignIn.css'; // Import the same CSS file used by the sign-in page
 
 export function Register() {
+  // Your existing state and logic for registration
   const [formData, setFormData] = useState({
     email: '',
     fName: '',
@@ -24,7 +26,6 @@ export function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    
     try {
       await register(
         formData.email,
@@ -32,69 +33,80 @@ export function Register() {
         formData.lName,
         formData.password
       );
-      navigate('/profile'); // Redirect to profile page after successful registration
+      navigate('/profile');
     } catch (error) {
-      setError(error.message || 'An error occurred');
+      setError(error.message || 'An error occurred during registration.');
     }
   };
 
-  return (
-    <div>
-      <h1>Register</h1>
-      {error && <div>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="fName">First Name:</label>
-          <input
-            id="fName"
-            name="fName"
-            type="text"
-            value={formData.fName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="lName">Last Name:</label>
-          <input
-            id="lName"
-            name="lName"
-            type="text"
-            value={formData.lName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Register</button>
-      </form>
+  // This hook prevents scrolling, just like on the sign-in page
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
-      <br/><br/>
-      <p>Have an account? </p>
-      <Link to="/signin">
-        <button>Sign In</button>
-      </Link>
+  return (
+    <div className="signin-page"> {/* Reusing styles from sign-in */}
+      <div className="signin-container">
+
+        <h1 className="main-heading">Create an account</h1>
+        
+        <div className="signin-form-wrapper">
+          <form className="signin-form" onSubmit={handleSubmit}>
+            {error && <div className="signin-error">{error}</div>}
+            
+            <input
+              name="fName"
+              type="text"
+              placeholder="First Name"
+              className="signin-input"
+              value={formData.fName}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="lName"
+              type="text"
+              placeholder="Last Name"
+              className="signin-input"
+              value={formData.lName}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              className="signin-input"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              className="signin-input"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <button type="submit" className="signin-button-primary">
+              Register
+            </button>
+          </form>
+        </div>
+        
+        <div className="register-section">
+          <p>Already have an account? <Link to="/signin" className="register-link">Sign In</Link></p>
+        </div>
+
+      </div>
+      <footer className="page-footer">
+        <p>Mendez | de Gala | Paglinawan | Sobrepeña | Acpal | Pua</p>
+      </footer>
     </div>
   );
-} 
+}

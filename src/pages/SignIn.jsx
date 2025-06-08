@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import './SignIn.css';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -9,51 +10,68 @@ export function SignIn() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    
     try {
       await signIn(email, password);
-      navigate('/profile'); // Redirect to profile page after successful sign in
+      navigate('/profile');
     } catch (error) {
-      setError(error.message || 'An error occurred');
+      setError(error.message || 'Failed to sign in. Please check your credentials.');
     }
   };
 
   return (
-    <div>
-      <h1>Sign In</h1>
-      {error && <div>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Sign In</button>
-      </form>
+    <div className="signin-page">
+      <div className="signin-container">
 
-      <br/><br/>
-      <p>Register an account here</p>
-      <Link to="/register">
-        <button>Register</button>
-      </Link>
+        <h1 className="main-heading">Welcome to Group 5's Practical Exam</h1>
+        
+        <div className="signin-form-wrapper">
+          <form className="signin-form" onSubmit={handleSubmit}>
+            {error && <div className="signin-error">{error}</div>}
+            
+            <input
+              type="email"
+              placeholder="Username, phone, or email"
+              className="signin-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="signin-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit" className="signin-button-primary">
+              Log In
+            </button>
+          </form>
+
+          {}
+        </div>
+        
+        <div className="register-section">
+          <p>Don't have an account? <Link to="/register" className="register-link">Register</Link></p>
+        </div>
+
+      </div>
+
+      {}
+      <footer className="page-footer">
+        <p>Mendez | de Gala | Paglinawan | Sobrepeña | Acpal | Pua</p>
+      </footer>
     </div>
   );
-} 
+}
