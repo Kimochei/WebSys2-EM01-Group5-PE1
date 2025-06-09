@@ -1,9 +1,15 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export function Profile() {
   const { user, signOut, updateProfilePicture } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    //auto set title
+    document.title = `User Profile`;
+  }, []);
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
@@ -52,6 +58,10 @@ export function Profile() {
         <p>Email: {user.email}</p>
       </div>
       <button onClick={handleSignOut}>Sign Out</button>
+      <button className="signin-button-primary" onClick={() => {
+        navigate('/home');
+      }}>Go to Home page [HEAVILY WORK IN PROGRESS]
+      </button>
     </div>
   );
-} 
+}

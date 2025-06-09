@@ -169,7 +169,7 @@ curl --location --request POST '/post/9/likes'
 
 response:
 
-```json
+```
 No response
 ```
 
@@ -195,7 +195,7 @@ curl --location --request DELETE '/post/9/likes'
 
 response:
 
-```json
+```
 No response
 ```
 

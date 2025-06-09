@@ -93,7 +93,7 @@ curl --location '/register' \
 
 response:
 
-```json
+```
 No response
 ```
 

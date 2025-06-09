@@ -1,8 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext'; // auth stuff (cdg)
-import { SignIn } from './pages/SignIn'; // cdg
-import { Register } from './pages/Register'; // cdg
-import { Profile } from './pages/Profile'; // cdg
+
+// links to individual pages (cdg)
+import { SignIn } from './pages/SignIn';
+import { Register } from './pages/Register';
+import { Profile } from './pages/Profile';
+import { LandingPage } from './pages/LandingPage';
+import { HomePage } from './pages/HomePage';
 
 import './App.css'
 
@@ -20,17 +24,25 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
-          <Route 
-            path="/profile" 
+          <Route
+            path="/profile"
             element={
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>

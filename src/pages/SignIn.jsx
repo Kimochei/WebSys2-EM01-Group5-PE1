@@ -14,6 +14,7 @@ export function SignIn() {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'auto';
+      document.title = 'Sign In';
     };
   }, []);
 
