@@ -19,7 +19,7 @@ export function HomePage() {
       setPosts(fetchedPosts);
     };
     initialLoad();
-  }, []);
+  }, [getPosts]);
 
   const loadPosts = async () => {
     const fetchedPosts = await getPosts();

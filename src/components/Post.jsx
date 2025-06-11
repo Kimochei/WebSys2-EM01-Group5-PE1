@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import './Post.css';
 
@@ -41,6 +41,7 @@ export function Post({ post, onUpdate }) {
         setReplies(data.replies || []);
       }
     } catch (err) {
+      console.error(err);
       setReplies([]);
     }
     setLoadingReplies(false);
