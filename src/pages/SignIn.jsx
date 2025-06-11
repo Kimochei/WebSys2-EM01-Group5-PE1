@@ -23,7 +23,7 @@ export function SignIn() {
     setError(null);
     try {
       await signIn(email, password);
-      navigate('/profile');
+      navigate('/home');
     } catch (error) {
       setError(error.message || 'Failed to sign in. Please check your credentials.');
     }

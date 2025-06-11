@@ -1,0 +1,133 @@
+.home-page {
+  display: flex;
+  width: 150vh;
+  max-width: 200vh;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+.sidebar {
+  width: 300px;
+  padding: 24px;
+  background-color: #1e1e1e;
+  border-right: 1px solid #2f3336;
+}
+
+.user-info {
+  position: sticky;
+  top: 24px;
+}
+
+.user-info h2 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  color: #e7e9ea;
+}
+
+.user-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-button {
+  width: 100%;
+  background-color: #f5f5f5;
+  color: #121212;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.nav-button:hover {
+  background-color: #dddddd;
+}
+
+.nav-button.sign-out {
+  background-color: #f91880;
+}
+
+.nav-button.sign-out:hover {
+  background-color: #e01773;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.post-form-container {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #2f3336;
+  border-radius: 12px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+  background-color: #1e1e1e;
+  color: #e7e9ea;
+}
+
+.post-input:focus {
+  border-color: #1d9bf0;
+}
+
+.post-input::placeholder {
+  color: #71767b;
+}
+
+.post-button {
+  align-self: flex-end;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 24px;
+  background-color: #1d9bf0;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.post-button:hover {
+  background-color: #1a8cd8;
+}
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 25px;
+  text-align: center;
+  color: #a8a8a8;
+  font-size: 0.8rem;
+}

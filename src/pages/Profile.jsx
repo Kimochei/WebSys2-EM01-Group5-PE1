@@ -60,7 +60,7 @@ export function Profile() {
       <button onClick={handleSignOut}>Sign Out</button>
       <button className="signin-button-primary" onClick={() => {
         navigate('/home');
-      }}>Go to Home page [HEAVILY WORK IN PROGRESS]
+      }}>Go to Home page [STILL WORK IN PROGRESS]
       </button>
     </div>
   );
