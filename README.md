@@ -1,4 +1,40 @@
-# React + Vite
+
+# Social Media App (Lab Exercise 3 / Practical Exam 1)
+
+by Group 5 of BM3 - ITS122L
+
+## Members:
+
+- Bonzi James Mendez
+- Christian de Gala ([@unawarespecs](https://github.com/unawarespecs))
+- Clark Paglinawan
+- Kim Miguel Sobrepeña ([@Kimochei](https://github.com/Kimochei))
+- Mark Branon Acpal ([@DefnotMark28](https://github.com/DefnotMark28))
+- Richard Pua
+
+> pamove na lang github handles nyo near your names above, ty 
+
+- other members: [@dead1newbie](https://github.com/dead1newbie) & [@RitsuPretzy](https://github.com/@RitsuPretzy)
+
+## Purpose
+
+### Activity Objectives
+
+Over the past two weeks, you learned about Controlled Components, Side Effects, how to integrate with APIs, and create multi-page applications within React using React Router. Combined with your previous experience with Props and States, you now have the tools to create a full-fledged React application. This activity will test your ability to make use of React’s fundamental features. 
+
+Additionally, this activity tests your ability to read API documentation as you will be working with an existing API service.
+
+### Activity Format
+
+This is a **Group Activity** consisting of at least 2 and up to 5 members each.
+
+The Group is tasked with creating a Social Media application. An API service will be provided for the entire class. The Group is expected to be as creative as possible with how they design their applications and work around data available to them.
+
+You will use the following API: [https://supabase-socmed.vercel.app](https://supabase-socmed.vercel.app/)
+
+---
+
+# Original template README
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

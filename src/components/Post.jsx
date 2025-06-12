@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, api } from '../contexts/AuthContext';
 import './Post.css';
 
 export function Post({ post, onUpdate }) {
@@ -12,6 +12,15 @@ export function Post({ post, onUpdate }) {
   // Show replies variables.
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
+
+  // For post date & time formatting
+  const postDateOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric'
+  };
 
   // Initialize like count and status
   useEffect(() => {
@@ -28,18 +37,9 @@ export function Post({ post, onUpdate }) {
   const fetchReplies = async () => {
     setLoadingReplies(true);
     try {
-      const res = await fetch(
-        `https://supabase-socmed.vercel.app/post/${post.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        setReplies(data.replies || []);
-      }
+      const res = await api.get(`/post/${post.id}`);
+      console.log(res.data);
+      setReplies(res.data.replies || []);
     } catch (err) {
       console.error(err);
       setReplies([]);
@@ -49,6 +49,7 @@ export function Post({ post, onUpdate }) {
 
   /* FIXME: buggy as heck. (may double count and cause all 
       subsequent likes/unlikes to fail w/ HTTP 400, aka Bad Request)
+      - cdg
   */
   const handleLike = async () => {
     try {
@@ -86,7 +87,8 @@ export function Post({ post, onUpdate }) {
         <p>{post.content}</p>
         <div className="post-meta">
           <span className="post-time">
-            {new Date(post.created_at).toLocaleString()} - Post #{post.id}
+            {new Date(post.created_at).toLocaleString('en-US', postDateOptions)} - Post #{post.id}
+            <br />Created by user_id {post.owned_by}
           </span>
         </div>
       </div>
@@ -130,8 +132,9 @@ export function Post({ post, onUpdate }) {
                   <div key={reply.id} className="reply">
                     <div className="reply-meta">
                       <span>
+                        Reply by {reply.users.fName} {reply.users.lName}<br />
                         {reply.created_at
-                          ? new Date(reply.created_at).toLocaleString()
+                          ? new Date(reply.created_at).toLocaleString('en-US', postDateOptions)
                           : ''}
                       </span>
                     </div>

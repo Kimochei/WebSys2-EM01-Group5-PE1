@@ -21,14 +21,14 @@
   font-size: 16px;
   line-height: 1.5;
   color: #e7e9ea;
-  text-align: justify;
+  text-align: left;
 }
 
 .post-meta {
   margin-top: 8px;
   font-size: 14px;
   color: #71767b;
-  text-align: justify;
+  text-align: left;
 }
 
 .reply-content {
@@ -109,6 +109,7 @@
   transition: border-color 0.2s ease;
   background-color: #1e1e1e;
   color: #e7e9ea;
+  font-family: inherit;
 }
 
 .reply-input:focus {

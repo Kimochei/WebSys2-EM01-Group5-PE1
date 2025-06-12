@@ -59,8 +59,6 @@ export function SignIn() {
               Log In
             </button>
           </form>
-
-          {}
         </div>
         
         <div className="register-section">
@@ -69,7 +67,6 @@ export function SignIn() {
 
       </div>
 
-      {}
       <footer className="page-footer">
         <p>Mendez | de Gala | Paglinawan | Sobrepeña | Acpal | Pua</p>
       </footer>
