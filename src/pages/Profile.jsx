@@ -1,76 +1,64 @@
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import './Signin.css'
+import { useEffect, useState } from 'react';
+import './Profile.css';
 
 export function Profile() {
-  const { user, signOut, updateProfilePicture } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('threads');
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'auto';
-      document.title = 'User Profile';
-    };
+    document.title = 'Profile';
   }, []);
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      await updateProfilePicture(file);
-    } catch (error) {
-      console.error('Failed to update profile picture:', error);
-    }
-  };
-
-  const handleSignOut = () => {
-    signOut();
-    navigate('/signin');
-  };
-
   if (!user) {
-    return <div>Loading...</div>;
+    return <div>Loading profile...</div>;
   }
 
   return (
-    <div className="signin-page">
-      <div className="signin-container">
-        <h1>Profile</h1>
-        <div>
-          {user.profile_picture && (
-            <img
-              src={user.profile_picture}
-              alt="Profile"
-              style={{ width: 100, height: 100, borderRadius: '50%' }}
-            />
-          )}
-          <div>
-            <label htmlFor="profile-picture">Change Profile Picture</label>
-            <input
-              id="profile-picture"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+    <div className="profile-page-wrapper">
+      <div className="profile-container">
+        {}
+        <div className="profile-details">
+          <div className="profile-header">
+            <h1 className="profile-name">{user.fName} {user.lName}</h1>
+            <p className="profile-email">{user.email}</p>
+            <p className="profile-bio">
+              Bio (Future Feature)
+            </p>
+          </div>
+
+          <div className="profile-actions">
+            <button className="edit-profile-btn">Edit profile</button>
           </div>
         </div>
-        <div>
-          <h2>User Information</h2>
-          <p>Name: {user.fName} {user.lName}</p>
-          <p>Email: {user.email}</p>
-        </div>
-        <button onClick={handleSignOut}>Sign Out</button>
-        <button className="signin-button-primary" onClick={() => {
-          navigate('/home');
-        }}>Go to Home page [STILL WORK IN PROGRESS]
+        
+        {}
+        <img
+          src={user.profile_picture || 'https://via.placeholder.com/90'}
+          alt="Profile"
+          className="profile-picture"
+        />
+      </div>
+
+      <div className="profile-tabs">
+        <button
+          className={`profile-tab ${activeTab === 'posts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('threads')}
+        >
+          Posts
+        </button>
+        <button
+          className={`profile-tab ${activeTab === 'replies' ? 'active' : ''}`}
+          onClick={() => setActiveTab('replies')}
+        >
+          Replies
         </button>
       </div>
-            <footer className="page-footer">
-        <p>Mendez | de Gala | Paglinawan | Sobrepeña | Acpal | Pua</p>
-      </footer>
+
+      <div className="profile-content">
+        {activeTab === 'posts' && <div>Posts by the user will show here.</div>}
+        {activeTab === 'replies' && <div>Replies by the user will show here.</div>}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,90 @@
+.profile-page-wrapper {
+  padding: 1rem 0;
+}
+
+.profile-container {
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start; 
+  gap: 20px;
+}
+
+.profile-details {
+  flex: 1; 
+}
+
+.profile-header {
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.profile-email {
+  font-size: 15px;
+  color: #71767b;
+  margin-top: 4px;
+}
+
+.profile-bio {
+  margin-top: 16px;
+  font-size: 15px;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #101010;
+  flex-shrink: 0; 
+}
+
+.profile-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+.edit-profile-btn {
+  background-color: transparent;
+  color: #f5f5f5;
+  border: 1px solid #2f3336;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%; 
+}
+
+.edit-profile-btn:hover {
+  background-color: #2f3336;
+}
+
+.profile-tabs {
+  margin-top: 24px;
+  display: flex;
+  border-bottom: 1px solid #2f3336;
+}
+
+.profile-tab {
+  flex: 1;
+  padding: 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #71767b;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.profile-tab.active {
+  color: #f5f5f5;
+  border-bottom: 2px solid #f5f5f5;
+}

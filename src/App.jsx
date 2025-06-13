@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext'; // auth stuff (cdg)
 
+import { MainLayout } from './layouts/MainLayout';
 // links to individual pages (cdg)
 import { SignIn } from './pages/SignIn';
 import { Register } from './pages/Register';
@@ -12,10 +13,19 @@ import './App.css'
 
 // redirect to signin page if not signed in
 function ProtectedRoute({ children }) {
-  const { user } = useAuth();
-  if (!user) {
+  const { token, loading } = useAuth();
+
+  // Show a loading message while we verify the token
+  if (loading) {
+    return <div>Loading Application...</div>;
+  }
+
+  // If loading is finished and there's no token, redirect to signin
+  if (!token) {
     return <Navigate to="/signin" />;
   }
+
+  // Otherwise, show the requested page
   return children;
 }
 
@@ -24,30 +34,27 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
+          {}
           <Route path="/" element={<LandingPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
+
+          {}
           <Route
-            path="/profile"
+            path="/"
             element={
               <ProtectedRoute>
-                <Profile />
+                <MainLayout />
               </ProtectedRoute>
             }
-          />
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path={"*"} element={<Navigate to="/"/>} />
+          >
+            <Route path="home" element={<HomePage />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </Router>
   );
 }
 
-export default App
+export default App;
