@@ -12,16 +12,10 @@ export function Post({ post, onUpdate }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [likeCount, setLikeCount] = useState(post.likes[0]?.count || 0);
-  const [author, setAuthor] = useState({ fName: 'User', lName: '', profile_picture: 'https://via.placeholder.com/48' });
+  const [author, setAuthor] = useState({ fName: 'Other', lName: 'User', profile_picture: 'https://www.placeholderimage.online/images/generic/user-photo.jpg' });
 
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
-
-  const postDateOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
 
   useEffect(() => {
     // usually fine=fetch post author data based on `post.owned_by`
@@ -99,7 +93,13 @@ export function Post({ post, onUpdate }) {
             <div className="post-header">
                 <span className="post-author">{author.fName} {author.lName}</span>
                 <span className="post-time">
-                    {new Date(post.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                    {new Date(post.created_at).toLocaleString('en-US', {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      month: 'numeric',
+                      day: 'numeric',
+                      year: 'numeric'}
+                    )}
                 </span>
             </div>
             <div className="post-content">
@@ -146,7 +146,12 @@ export function Post({ post, onUpdate }) {
                         <div key={reply.id} className="reply">
                             <div className="reply-meta">
                             <span>
-                                Reply by {reply.users.fName} {reply.users.lName}
+                                Reply by {reply.users.fName} {reply.users.lName} - {new Date(reply.created_at).toLocaleString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              month: 'numeric',
+                              day: 'numeric',
+                              year: 'numeric'})}
                             </span>
                             </div>
                             <div className="reply-content"><p>{reply.content}</p></div>

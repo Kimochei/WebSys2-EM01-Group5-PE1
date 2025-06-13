@@ -31,7 +31,6 @@ export function AuthProvider({children}) {
       formData.append('password', password);
 
       const {data} = await api.post('/sign-in', formData);
-      console.log(data);
       const accessToken = data.access_token;
 
       // Store token in localStorage
@@ -86,7 +85,6 @@ export function AuthProvider({children}) {
         },
       });
 
-      console.log(data);
       setUser(data[0]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -99,13 +97,11 @@ export function AuthProvider({children}) {
   // --- Posts API ---
   const getPosts = async (page = 1) => {
     const {data} = await api.get(`/post?page=${page}`);
-    console.log(data);
     return data;
   };
 
   const getPost = async (id) => {
     const {data} = await api.get(`/post/${id}`);
-    console.log(data);
     return data;
   };
 
@@ -113,7 +109,6 @@ export function AuthProvider({children}) {
     const formData = new URLSearchParams();
     formData.append('content', content);
     const {data} = await api.post('/post', formData);
-    console.log(data);
     return data;
   };
 
@@ -129,13 +124,11 @@ export function AuthProvider({children}) {
     const formData = new URLSearchParams();
     formData.append('content', content);
     const {data} = await api.post(`/post/${id}/replies`, formData);
-    console.log(data);
     return data;
   };
 
   const deleteReply = async (postId, replyId) => {
     const {data} = await api.delete(`/post/${postId}/replies/${replyId}`);
-    console.log(data);
     return data;
   };
 
