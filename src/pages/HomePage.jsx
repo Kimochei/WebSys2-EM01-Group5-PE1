@@ -18,7 +18,6 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
-    // Only load posts once on initial mount
     const initialLoad = async () => {
       setPostsLoaded(false);
       const fetchedPosts = await getPosts();
@@ -49,67 +48,69 @@ export function HomePage() {
     loadPosts();
   };
 
-  return (<>
-    <div className="sidebar">
-      <div className="user-info">
-        <h2>Group 5's Practical</h2>
-        <div className="user-actions">
-          <button onClick={() => navigate('/profile')} className="nav-button profpic">
-            {user.profile_picture && (
-              <img src={user.profile_picture} alt="Profile" />
-            )} {user.fName}'s Profile
-          </button>
-          <button onClick={handleSignOut} className="nav-button sign-out">
-            Sign Out
-          </button>
-          <div className="sidebar-footer">
-            <p>Mendez | de Gala | Paglinawan | Sobrepeña | Acpal | Pua</p>
+  return (
+    //  wrap div begin
+    <div className="home-layout-wrapper">
+      <div className="sidebar">
+        <div className="user-info">
+          <h2>Group 5's Practical</h2>
+          <div className="user-actions">
+            <button onClick={() => navigate('/profile')} className="nav-button profpic">
+              {user.profile_picture && (
+                <img src={user.profile_picture} alt="Profile" />
+              )} {user.fName}'s Profile
+            </button>
+            <button onClick={handleSignOut} className="nav-button sign-out">
+              Sign Out
+            </button>
+            <div className="sidebar-footer">
+              <p>Mendez | de Gala | Paglinawan | Sobrepeña | Acpal | Pua</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div className="home-page">
-      <div className="main-content">
-        <div className="post-form-container">
-          <form onSubmit={handleUpload} className="post-form">
-            <textarea
-              value={newContent}
-              onChange={e => setNewContent(e.target.value)}
-              placeholder="What's on your mind?"
-              className="post-input"
-              rows="3"
-            />
-            <button type="submit" className="post-button">
-              Post
-            </button>
-          </form>
-        </div>
+      <div className="home-page">
+        <div className="main-content">
+          <div className="post-form-container">
+            <form onSubmit={handleUpload} className="post-form">
+              <textarea
+                value={newContent}
+                onChange={e => setNewContent(e.target.value)}
+                placeholder="What's on your mind?"
+                className="post-input"
+                rows="3"
+              />
+              <button type="submit" className="post-button">
+                Post
+              </button>
+            </form>
+          </div>
 
-        <div className="posts-container">
-          {!postsLoaded ?
-            (
-              <div>
-                <BounceLoader
-                  size="150px"
-                  color="#008ed8"
-                  loading="true"
-                  cssOverride={{
-                    display: "block",
-                    marginLeft: "15.5rem"
-                  }} />
+          <div className="posts-container">
+            {!postsLoaded ?
+              (
+                <div className="spinner-container">
+                  <BounceLoader
+                    size="150px"
+                    color="#008ed8"
+                    loading={true}
+                    cssOverride={{
+                      display: "block",
+                      margin: "0 auto 20px auto"
+                    }} />
 
-                <p>Loading posts...</p>
-              </div>
-            )
-            :
-            posts.map(post => (
-              <Post className={"post"} key={post.id} post={post} onUpdate={loadPosts} />
-            ))
-          }
+                  <p>Loading posts...</p>
+                </div>
+              )
+              :
+              posts.map(post => (
+                <Post className={"post"} key={post.id} post={post} onUpdate={loadPosts} />
+              ))
+            }
+          </div>
         </div>
       </div>
-    </div>
-  </>
+    </div> //  // end of wrapped vi
   );
 }
