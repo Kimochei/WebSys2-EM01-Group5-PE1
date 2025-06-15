@@ -34,7 +34,7 @@ export function Profile() {
         
         {}
         <img
-          src={user.profile_picture || 'https://via.placeholder.com/90'}
+          src={user.profile_picture || 'https://www.placeholderimage.online/images/generic/user-photo.jpg'}
           alt="Profile"
           className="profile-picture"
         />

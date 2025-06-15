@@ -7,25 +7,14 @@ import './Post.css';
 import { FaHeart, FaRegHeart, FaRegCommentDots } from 'react-icons/fa';
 
 export function Post({ post, onUpdate }) {
-  const { user, likePost, unlikePost, replyToPost } = useAuth();
+  const { likePost, unlikePost, replyToPost } = useAuth();
   const [isLiked, setIsLiked] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [likeCount, setLikeCount] = useState(post.likes[0]?.count || 0);
-  const [author, setAuthor] = useState({ fName: 'Other', lName: 'User', profile_picture: 'https://www.placeholderimage.online/images/generic/user-photo.jpg' });
 
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
-
-  useEffect(() => {
-    // usually fine=fetch post author data based on `post.owned_by`
-    // For now, we'll use the logged-in user's data as a placeholder for the post author
-    // if the post is owned by the current user.
-    if (user && post.owned_by === user.id) {
-       setAuthor(user);
-    }
-  }, [post.owned_by, user]);
-
 
   useEffect(() => {
     setLikeCount(post.likes[0]?.count || 0);
@@ -53,6 +42,7 @@ export function Post({ post, onUpdate }) {
       subsequent likes/unlikes to fail w/ HTTP 400, aka Bad Request)
       - cdg
   */
+  // patanggal na lang ng comment above if you managed to fix this, ty - cdg (@unawarespecs)
 
   const handleLike = async () => {
     try {
@@ -87,11 +77,15 @@ export function Post({ post, onUpdate }) {
   return (
     <div className="post">
         <div className="post-avatar">
-            <img src={author.profile_picture} alt={`${author.fName}'s avatar`} />
+            {/*use placeholder profpic if user has no assigned profile picture*/}
+            <img src={post.users?.profile_picture ||
+              'https://www.placeholderimage.online/images/generic/user-photo.jpg'}
+                 alt={`${post.users?.fName || 'Unknown user'}'s avatar`} />
         </div>
         <div className="post-main">
             <div className="post-header">
-                <span className="post-author">{author.fName} {author.lName}</span>
+              {/*same thing if user has no first or last name registered*/}
+                <span className="post-author">{post.users?.fName || 'Unknown'} {post.users?.lName || 'user'}</span>
                 <span className="post-time">
                     {new Date(post.created_at).toLocaleString('en-US', {
                       hour: 'numeric',
