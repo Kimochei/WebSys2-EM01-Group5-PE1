@@ -2,6 +2,8 @@
 
 API link is at [https://supabase-socmed.vercel.app](https://supabase-socmed.vercel.app)
 
+Backup API located at http://goshawk-one-bear.ngrok-free.app
+
 Documentation originally located at [https://documenter.getpostman.com/view/13930672/2sB2qi8xaM](https://documenter.getpostman.com/view/13930672/2sB2qi8xaM#8fa38976-ddfe-4d86-aba6-14bde79101de)
 
 ## **Posts**
@@ -302,6 +304,84 @@ response:
     "created_at": "2025-06-04T02:19:54.807754+00:00",
     "owned_by": "039b0314-bd40-4730-87d3-ee7c9b012990",
     "content": "Hello from Express!"
+  }
+]
+```
+
+**GET - Get All Posts Liked by User**
+
+`/user/likes`
+
+**AUTHORIZATION** Bearer Token
+
+**Token**
+
+**HEADERS** 
+
+**Accept** application/json
+
+example request (using curl)
+
+```
+curl --location '/user/likes' \
+--header 'Accept: application/json'
+```
+
+response:
+
+```json
+[
+  {
+    "id": 19,
+    "created_at": "2025-06-16T11:33:48.389816+00:00",
+    "owned_by": "039b0314-bd40-4730-87d3-ee7c9b012990",
+    "thread": 12,
+    "content": "This is a reply!",
+    "posts": {
+      "id": 12,
+      "content": "Long paragraph for scrolling test\n\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus.",
+      "owned_by": "044be426-b4f9-479e-a2f9-1270895a7c16",
+      "created_at": "2025-06-12T16:21:48.688016+00:00"
+    }
+  }
+]
+```
+
+**GET - Get All Replies by User**
+
+`/user/replies`
+
+**AUTHORIZATION** Bearer Token
+
+**Token**
+
+**HEADERS**
+
+**Accept** application/json
+
+example request (using curl)
+
+```
+curl --location '/user/replies' \
+--header 'Accept: application/json'
+```
+
+response:
+
+```json
+[
+  {
+    "id": 19,
+    "created_at": "2025-06-16T11:33:48.389816+00:00",
+    "owned_by": "039b0314-bd40-4730-87d3-ee7c9b012990",
+    "thread": 12,
+    "content": "This is a reply!",
+    "posts": {
+      "id": 12,
+      "content": "Long paragraph for scrolling test\n\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus.",
+      "owned_by": "044be426-b4f9-479e-a2f9-1270895a7c16",
+      "created_at": "2025-06-12T16:21:48.688016+00:00"
+    }
   }
 ]
 ```
