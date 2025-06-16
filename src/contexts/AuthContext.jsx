@@ -3,7 +3,8 @@ import axios from 'axios';
 
 // Create an axios instance for the social media API (thanks sir) - cdg
 export const api = axios.create({
-  baseURL: 'https://supabase-socmed.vercel.app/',
+  // baseURL: 'https://supabase-socmed.vercel.app/',
+  baseURL: 'http://goshawk-one-bear.ngrok-free.app/',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   },
@@ -145,6 +146,24 @@ export function AuthProvider({ children }) {
     return data;
   };
 
+  const getPostsLikedByUser = async () => {
+    const { data } = await api.get(`/user/likes`, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    return data;
+  }
+
+  const getUserReplies = async () => {
+    const { data } = await api.get(`/user/replies`, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    return data;
+  }
+
   const value = {
     user,
     token,
@@ -159,7 +178,9 @@ export function AuthProvider({ children }) {
     likePost,
     unlikePost,
     replyToPost,
-    deleteReply
+    deleteReply,
+    getPostsLikedByUser,
+    getUserReplies
   };
 
   return (
