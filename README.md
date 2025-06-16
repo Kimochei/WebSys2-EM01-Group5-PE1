@@ -10,11 +10,11 @@ by Group 5 of BM3 - ITS122L
 - Clark Paglinawan
 - Kim Miguel Sobrepeña ([@Kimochei](https://github.com/Kimochei))
 - Mark Branon Acpal ([@DefnotMark28](https://github.com/DefnotMark28))
-- Richard Pua
+- Richard Pua [@RitsuPretzy](https://github.com/@RitsuPretzy)
 
 > pamove na lang github handles nyo near your names above, ty 
 
-- other members: [@dead1newbie](https://github.com/dead1newbie) & [@RitsuPretzy](https://github.com/@RitsuPretzy)
+- other members: [@dead1newbie](https://github.com/dead1newbie)
 
 ## Purpose
 

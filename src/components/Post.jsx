@@ -7,7 +7,7 @@ import './Post.css';
 import { FaHeart, FaRegHeart, FaRegCommentDots } from 'react-icons/fa';
 
 export function Post({ post, onUpdate }) {
-  const { likePost, unlikePost, replyToPost } = useAuth();
+  const { likePost, unlikePost, replyToPost, user: currentUser } = useAuth();
   const [isLiked, setIsLiked] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
@@ -74,6 +74,21 @@ export function Post({ post, onUpdate }) {
     }
   };
 
+const handleDeleteReply = async (replyId) => {
+  try {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
+    await api.delete(`/post/${post.id}/replies/${replyId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    setReplies((prev) => prev.filter((r) => r.id !== replyId));
+  } catch (err) {
+    console.error('Failed to delete reply:', err);
+    // Optionally show an error message to the user
+  }
+};
+
   return (
     <div className="post">
         <div className="post-avatar">
@@ -137,19 +152,25 @@ export function Post({ post, onUpdate }) {
                     ) : (
                     replies.length > 0 ? (
                         replies.map(reply => (
-                        <div key={reply.id} className="reply">
-                            <div className="reply-meta">
-                            <span>
-                                Reply by {reply.users.fName} {reply.users.lName} - {new Date(reply.created_at).toLocaleString('en-US', {
-                              hour: 'numeric',
-                              minute: '2-digit',
-                              month: 'numeric',
-                              day: 'numeric',
-                              year: 'numeric'})}
-                            </span>
-                            </div>
-                            <div className="reply-content"><p>{reply.content}</p></div>
-                        </div>
+                          <div key={reply.id} className="reply">
+                              <div className="reply-meta">
+                                <span>
+                                  Reply by {reply.users.fName} {reply.users.lName} - {new Date(reply.created_at).toLocaleString('en-US', {
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                    month: 'numeric',
+                                    day: 'numeric',
+                                    year: 'numeric'})}
+                                </span>
+                              </div>
+                              <div className="reply-content"><p>{reply.content}</p></div>
+                              {/* Show delete button if the reply is by the current user */}
+                              {reply.owned_by === (currentUser?.id) && (
+                                <button onClick={() => handleDeleteReply(reply.id)}>
+                                  Delete
+                                </button>
+                              )}
+                          </div>
                         ))
                     ) : (
                         <div>No replies yet.</div>
