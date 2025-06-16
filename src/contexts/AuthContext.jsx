@@ -59,6 +59,9 @@ export function AuthProvider({ children }) {
       setToken(accessToken);
 
     } catch (error) {
+
+      console.error('Full error:', error);
+
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.message || 'Sign in failed');
       }

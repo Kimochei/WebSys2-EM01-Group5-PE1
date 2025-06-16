@@ -19,7 +19,7 @@ export function LandingPage() {
 
         <h1 className="main-heading">Welcome to Group 5's Practical Exam</h1>
 
-        <p>[Placeholder, insert welcome message here]</p>
+        <p>Sign in or Register to get started!</p>
         <button className="signin-button-primary" onClick={() => {
           navigate('/signin');
         }}>Sign In

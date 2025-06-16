@@ -25,8 +25,9 @@ export function SignIn() {
       await signIn(email, password);
       navigate('/home');
     } catch (error) {
-      setError(error.message || 'Failed to sign in. Please check your credentials.');
-    }
+      setError(error?.message || 'Failed to sign in. Please check your credentials.');   
+    }  
+    
   };
 
   return (
