@@ -4,8 +4,9 @@ import axios from 'axios';
 // Create an axios instance for the social media API (thanks sir) - cdg
 export const api = axios.create({
   // baseURL: 'https://supabase-socmed.vercel.app/',
-  baseURL: 'http://goshawk-one-bear.ngrok-free.app/',
+  baseURL: 'https://goshawk-one-bear.ngrok-free.app/',
   headers: {
+    'ngrok-skip-browser-warning': 'yes', //needed to skip API errors with the new link
     'Content-Type': 'application/x-www-form-urlencoded',
   },
 });

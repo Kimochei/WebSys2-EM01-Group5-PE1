@@ -38,12 +38,6 @@ export function Post({ post, onUpdate }) {
     setLoadingReplies(false);
   };
 
-/* FIXME: buggy as heck. (may double count and cause all 
-      subsequent likes/unlikes to fail w/ HTTP 400, aka Bad Request)
-      - cdg
-  */
-  // patanggal na lang ng comment above if you managed to fix this, ty - cdg (@unawarespecs)
-
   const handleLike = async () => {
     try {
       if (isLiked) {
