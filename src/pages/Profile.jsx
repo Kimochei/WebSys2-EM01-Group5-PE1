@@ -1,14 +1,29 @@
 import { useAuth } from '../contexts/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import './Profile.css';
 
 export function Profile() {
-  const { user } = useAuth();
+  const { user, getPostsLikedByUser, getUserReplies } = useAuth();
   const [activeTab, setActiveTab] = useState('threads');
 
   useEffect(() => {
     document.title = 'Profile';
   }, []);
+
+  const displayLikedPosts = useCallback(async () => {
+    // FIXME: paimplement na lang sa actual page
+    console.log(await getPostsLikedByUser());
+  }, [getPostsLikedByUser]);
+
+  const displayRepliedPosts = useCallback(async () => {
+    // FIXME: paimplement na lang sa actual page
+    console.log(await getUserReplies());
+  }, [getUserReplies]);
+
+  useEffect(() => {
+    displayLikedPosts();
+    displayRepliedPosts();
+  }, [displayLikedPosts, displayRepliedPosts])
 
   if (!user) {
     return <div>Loading profile...</div>;
@@ -17,7 +32,7 @@ export function Profile() {
   return (
     <div className="profile-page-wrapper">
       <div className="profile-container">
-        {}
+        { }
         <div className="profile-details">
           <div className="profile-header">
             <h1 className="profile-name">{user.fName} {user.lName}</h1>
@@ -31,8 +46,8 @@ export function Profile() {
             <button className="edit-profile-btn">Edit profile</button>
           </div>
         </div>
-        
-        {}
+
+        { }
         <img
           src={user.profile_picture || 'https://www.placeholderimage.online/images/generic/user-photo.jpg'}
           alt="Profile"
@@ -42,10 +57,16 @@ export function Profile() {
 
       <div className="profile-tabs">
         <button
-          className={`profile-tab ${activeTab === 'posts' ? 'active' : ''}`}
+          className={`profile-tab ${activeTab === 'threads' ? 'active' : ''}`}
           onClick={() => setActiveTab('threads')}
         >
           Posts
+        </button>
+        <button
+          className={`profile-tab ${activeTab === 'likes' ? 'active' : ''}`}
+          onClick={() => setActiveTab('likes')}
+        >
+          Likes
         </button>
         <button
           className={`profile-tab ${activeTab === 'replies' ? 'active' : ''}`}
@@ -56,7 +77,8 @@ export function Profile() {
       </div>
 
       <div className="profile-content">
-        {activeTab === 'posts' && <div>Posts by the user will show here.</div>}
+        {activeTab === 'threads' && <div>Posts by the user will show here.</div>}
+        {activeTab === 'likes' && <div>Posts liked by the user will show here.</div>}
         {activeTab === 'replies' && <div>Replies by the user will show here.</div>}
       </div>
     </div>
