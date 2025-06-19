@@ -12,6 +12,7 @@ export function Post({ post, onUpdate }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [likeCount, setLikeCount] = useState(post.likes[0]?.count || 0);
+  const [replyCount, setReplyCount] = useState(post.replies[0]?.count || 0);
 
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
@@ -19,6 +20,10 @@ export function Post({ post, onUpdate }) {
   useEffect(() => {
     setLikeCount(post.likes[0]?.count || 0);
   }, [post.likes]);
+
+  useEffect(() => {
+    setReplyCount(post.replies[0]?.count || 0);
+  }, [post.replies]);
 
   useEffect(() => {
     if (showReplyForm) {
@@ -61,6 +66,7 @@ export function Post({ post, onUpdate }) {
     try {
       await replyToPost(post.id, replyContent);
       setReplyContent('');
+      setReplyCount(prev => prev + 1);
       await fetchReplies();
       onUpdate();
     } catch (error) {
@@ -77,6 +83,7 @@ const handleDeleteReply = async (replyId) => {
       }
     });
     setReplies((prev) => prev.filter((r) => r.id !== replyId));
+    setReplyCount(prev => prev - 1);
   } catch (err) {
     console.error('Failed to delete reply:', err);
     // Optionally show an error message to the user
@@ -123,7 +130,7 @@ const handleDeleteReply = async (replyId) => {
                 </button>
             </div>
             <div className="post-footer">
-                <span className="footer-link">{post.replies[0]?.count || 0} replies</span>
+                <span className="footer-link">{replyCount} replies</span>
                 <span className="footer-separator">·</span>
                 <span className="footer-link">{likeCount} likes</span>
             </div>
