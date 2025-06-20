@@ -4,6 +4,7 @@ import { Post } from '../components/Post';
 import { BounceLoader } from 'react-spinners';
 import { useInView } from 'react-intersection-observer';
 import './HomePage.css';
+import { useRef } from 'react';
 
 export function HomePage() {
   const { getPosts, uploadPost } = useAuth();
@@ -17,6 +18,9 @@ export function HomePage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { ref, inView } = useInView();
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = 'auto';
@@ -68,20 +72,30 @@ export function HomePage() {
     }
   }, [inView, postsLoaded, hasMore, page, loadPosts, isInitialLoad]);
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    if (!newContent.trim()) return;
+  //////////////////////////////////////////////////////////////////////////////////////
+  const handleUpload = async (e) => {   
+  e.preventDefault();
+  if (!newContent.trim() && !selectedFile) return;
 
-    await uploadPost(newContent);
+  const formData = new FormData();
+  formData.append('content', newContent);
+  if (selectedFile) {
+    formData.append('file', selectedFile);
+  }
+
+  try {
+    await uploadPost(formData); 
     setNewContent('');
+    setSelectedFile(null);
     setShowPopup(false);
-
-    // reset to initial state and reload first page
     setPage(1);
     setHasMore(true);
     setIsInitialLoad(true);
-  };
-
+  } catch (err) {
+    console.error("Error uploading post:", err);
+  }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div className="main-content">
       <div className="post-form-container">
@@ -93,6 +107,21 @@ export function HomePage() {
             className="post-input"
             rows="3"
           />
+
+        {/* Hidden file input */}
+          <input
+            type="file"
+            accept="image/*,image/gif"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+            onChange={(e) => setSelectedFile(e.target.files[0])}
+          />
+
+          {/* Custom button to trigger file input */}
+          <button type="button" onClick={() => fileInputRef.current.click()}>
+            Upload Image
+          </button>
+
           <button type="submit" className="post-button">
             Post
           </button>
@@ -146,6 +175,19 @@ export function HomePage() {
                 className="post-input"
                 rows="3"
               />
+
+              <input
+              type="file"
+              accept="image/*,image/gif"
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+              onChange={(e) => setSelectedFile(e.target.files[0])}
+              />
+
+              <button type="button" onClick={() => fileInputRef.current.click()}>
+              Upload Image
+              </button>
+
               <button type="submit" className="post-button">Post</button>
             </form>
           </div>

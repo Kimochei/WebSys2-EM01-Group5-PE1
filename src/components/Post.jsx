@@ -98,6 +98,9 @@ export function Post({ post, onUpdate }) {
             </div>
             <div className="post-content">
                 <p>{post.content}</p>
+                {post.imageUrl && (
+                  <img src={post.imageUrl} alt="Uploaded media" className="post-image" />
+                )}
             </div>
             <div className="post-actions">
                 <button
@@ -148,7 +151,12 @@ export function Post({ post, onUpdate }) {
                               year: 'numeric'})}
                             </span>
                             </div>
-                            <div className="reply-content"><p>{reply.content}</p></div>
+                            <div className="reply-content">
+                              <p>{reply.content}</p>
+                               {post.imageUrl && (
+                                <img src={post.imageUrl} alt="Uploaded media" className="post-image" />
+                              )}
+                            </div>
                         </div>
                         ))
                     ) : (
