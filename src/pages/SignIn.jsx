@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import './SignIn.css';
+import G5Logo from '../assets/G5Logo.png';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -33,6 +34,9 @@ export function SignIn() {
   return (
     <div className="signin-page">
       <div className="signin-container">
+
+        {/* Add the logo here */}
+        <img src={G5Logo} alt="Group 5 Logo" className="signin-logo" />
 
         <h1 className="main-heading">Welcome to Group 5's Practical Exam</h1>
         
