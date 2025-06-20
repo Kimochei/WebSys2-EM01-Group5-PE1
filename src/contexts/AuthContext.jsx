@@ -1,11 +1,12 @@
-import { createContext, useContext, useState, useEffect } from 'react'; // 1. Import useEffect
+import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Create an axios instance for the social media API (thanks sir) - cdg
 export const api = axios.create({
   baseURL: 'https://supabase-socmed.vercel.app/',
+  //baseURL: 'https://goshawk-one-bear.ngrok-free.app/',
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'ngrok-skip-browser-warning': 'yes', //needed to skip API errors with the new link
   },
 });
 
@@ -23,27 +24,29 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
+  const fetchUser = async () => {
+    if (token) {
+      try {
+        const { data: userData } = await api.get('/user');
+        setUser(userData);
+      } catch (error) {
+        console.error("Failed to fetch user with token.", error);
+        localStorage.removeItem('token');
+        setToken(null);
+      }
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (token) {
-        try {
-          const { data: userData } = await api.get('/user');
-          setUser(userData);
-        } catch (error) {
-          console.error("Failed to fetch user with token.", error);
-          // If token is invalid, clear it to prevent loops
-          localStorage.removeItem('token');
-          setToken(null);
-        }
-      }
-      setLoading(false); 
-    };
-
     fetchUser();
-  }, [token]); 
+  }, [token]);
+
+  const refreshUser = () => {
+    fetchUser();
+  };
 
   const signIn = async (email, password) => {
     try {
@@ -51,7 +54,9 @@ export function AuthProvider({ children }) {
       formData.append('email', email);
       formData.append('password', password);
 
-      const { data } = await api.post('/sign-in', formData);
+      const { data } = await api.post('/sign-in', formData, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
       console.log(data);
       const accessToken = data.access_token;
 
@@ -77,7 +82,9 @@ export function AuthProvider({ children }) {
       formData.append('lName', lName);
       formData.append('password', password);
 
-      await api.post('/register', formData);
+      await api.post('/register', formData, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
       await signIn(email, password);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -93,22 +100,33 @@ export function AuthProvider({ children }) {
     setToken(null);
   };
 
-  const updateProfilePicture = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append('profile', file);
-      const { data } = await api.patch('/user/profile-picture', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      console.log(data);
-      setUser(data[0]);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Failed to update profile picture');
-      }
-      throw error;
+const updateProfilePicture = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append('profile', file);
+
+    const { data } = await api.patch('/user/profile-picture', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    
+    if (data && typeof data === 'object' && !Array.isArray(data) && data.id) {
+      // If the response is a valid object, update the user state directly.
+      setUser(data);
+    } else {
+      // If the response is not a valid object, throw an error.
+      console.error('API did not return a valid user object.', data);
+      throw new Error('Invalid response from server after picture upload.');
     }
-  };
+
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Axios error during profile picture update:", error.response);
+      throw new Error(error.response.data?.message || 'Failed to update profile picture via API');
+    }
+    throw error;
+  }
+};
 
   // --- Posts API ---
   const getPosts = async (page = 1) => {
@@ -124,7 +142,9 @@ export function AuthProvider({ children }) {
   const uploadPost = async (content) => {
     const formData = new URLSearchParams();
     formData.append('content', content);
-    const { data } = await api.post('/post', formData);
+    const { data } = await api.post('/post', formData, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
     return data;
   };
 
@@ -139,7 +159,9 @@ export function AuthProvider({ children }) {
   const replyToPost = async (id, content) => {
     const formData = new URLSearchParams();
     formData.append('content', content);
-    const { data } = await api.post(`/post/${id}/replies`, formData);
+    const { data } = await api.post(`/post/${id}/replies`, formData, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
     return data;
   };
 
@@ -148,21 +170,42 @@ export function AuthProvider({ children }) {
     return data;
   };
 
+  const getPostsLikedByUser = async () => {
+    const { data } = await api.get(`/user/likes`, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    return data;
+  }
+
+  const getUserReplies = async () => {
+    const { data } = await api.get(`/user/replies`, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    return data;
+  }
+
   const value = {
     user,
     token,
-    loading, // 4. Expose the loading state
+    loading,
     signIn,
     register,
     signOut,
     updateProfilePicture,
+    refreshUser,
     getPosts,
     getPost,
     uploadPost,
     likePost,
     unlikePost,
     replyToPost,
-    deleteReply
+    deleteReply,
+    getPostsLikedByUser,
+    getUserReplies
   };
 
   return (

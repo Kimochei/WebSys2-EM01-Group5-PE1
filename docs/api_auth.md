@@ -2,6 +2,8 @@
 
 API link is at [https://supabase-socmed.vercel.app](https://supabase-socmed.vercel.app)
 
+Backup API located at http://goshawk-one-bear.ngrok-free.app
+
 Documentation originally located at [https://documenter.getpostman.com/view/13930672/2sB2qi8xaM](https://documenter.getpostman.com/view/13930672/2sB2qi8xaM#b3cf8bc8-e4df-4a27-be8d-9b14c959914b)
 
 ## **Authentication and User Management**

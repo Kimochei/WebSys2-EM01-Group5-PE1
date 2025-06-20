@@ -88,3 +88,192 @@
   color: #f5f5f5;
   border-bottom: 2px solid #f5f5f5;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(91, 112, 131, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid #2f3336;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 20px;
+  color: #f5f5f5;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #a8a8a8;
+  font-weight: 600;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #2f3336;
+  background-color: #101010;
+  color: #f5f5f5;
+  font-size: 1rem;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="file"]:focus {
+    border-color: #1d9bf0;
+    outline: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-actions button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #f5f5f5;
+  color: #121212;
+}
+
+.modal-actions button[type="submit"]:hover {
+  background-color: #dddddd;
+}
+
+
+.modal-actions button[type="button"] {
+  background-color: transparent;
+  color: #f5f5f5;
+  border: 1px solid #2f3336;
+}
+
+.modal-actions button[type="button"]:hover {
+  background-color: rgba(245, 245, 245, 0.1);
+}
+
+.spinner-container {
+  padding: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.empty-tab-message {
+  color: #71767b;
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.profile-post, .profile-post-context {
+  border-bottom: 1px solid #2f3336;
+  padding: 1rem;
+}
+
+.profile-post p {
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+  color: #e7e9ea;
+  white-space: pre-wrap;
+}
+
+.post-timestamp {
+  font-size: 0.8rem;
+  color: #71767b;
+}
+
+.context-text {
+  color: #71767b;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-reply-bubble {
+  background-color: #202327;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.profile-reply-bubble p {
+  margin: 0;
+}
+
+.spinner-container {
+  padding: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-content > .post,
+.profile-content > .reply-in-profile {
+  border-top: 1px solid #2f3336;
+}
+
+.profile-content > .post:first-child,
+.profile-content > .reply-in-profile:first-child {
+  border-top: none;
+}
+
+.empty-tab-message {
+  color: #71767b;
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.reply-in-profile {
+  padding-bottom: 1rem;
+}
+
+.reply-context-text {
+  color: #71767b;
+  font-size: 0.9rem;
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.reply-content-bubble {
+  background-color: #202327;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  margin: 0rem 1rem 0 52px; 
+}
+
+.reply-content-bubble p {
+  margin: 0;
+}

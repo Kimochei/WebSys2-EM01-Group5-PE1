@@ -7,12 +7,13 @@ import './HomePage.css';
 import { useRef } from 'react';
 
 export function HomePage() {
-  const { getPosts, uploadPost } = useAuth();
+  const { getPosts, uploadPost, getPostsLikedByUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const [newContent, setNewContent] = useState('');
   const [postsLoaded, setPostsLoaded] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [likedPostIds, setLikedPostIds] = useState(new Set());
 
   // page tracker for infinite scrolling (like threads/twitter)
   const [page, setPage] = useState(1);
@@ -26,6 +27,16 @@ export function HomePage() {
     document.body.style.overflow = 'auto';
     document.title = 'Home';
   }, []);
+
+  const fetchLikedPosts = useCallback(async () => {
+    try {
+      const likedPostsData = await getPostsLikedByUser();
+      const ids = new Set(likedPostsData.map(like => like.posts.id));
+      setLikedPostIds(ids);
+    } catch (error) {
+      console.error('Error fetching liked posts:', error);
+    }
+  }, [getPostsLikedByUser]);
 
   const loadPosts = useCallback(async (pageNum) => {
     setPostsLoaded(true);
@@ -58,10 +69,11 @@ export function HomePage() {
   // initial post loads (page 1)
   useEffect(() => {
     if (isInitialLoad) {
+      fetchLikedPosts();
       loadPosts(1);
       setIsInitialLoad(false);
     }
-  }, [isInitialLoad, loadPosts]);
+  }, [isInitialLoad, loadPosts, fetchLikedPosts]);
 
   // for infinite scrolling
   useEffect(() => {
@@ -72,30 +84,41 @@ export function HomePage() {
     }
   }, [inView, postsLoaded, hasMore, page, loadPosts, isInitialLoad]);
 
-  //////////////////////////////////////////////////////////////////////////////////////
-  const handleUpload = async (e) => {   
-  e.preventDefault();
-  if (!newContent.trim() && !selectedFile) return;
+            const handleUpload = async (e) => {   
+            e.preventDefault();
+            if (!newContent.trim() && !selectedFile) return;
 
-  const formData = new FormData();
-  formData.append('content', newContent);
-  if (selectedFile) {
-    formData.append('file', selectedFile);
-  }
+            const formData = new FormData();
+            formData.append('content', newContent);
+            if (selectedFile) {
+              formData.append('file', selectedFile);
+            }
 
-  try {
-    await uploadPost(formData); 
-    setNewContent('');
-    setSelectedFile(null);
-    setShowPopup(false);
-    setPage(1);
-    setHasMore(true);
-    setIsInitialLoad(true);
-  } catch (err) {
-    console.error("Error uploading post:", err);
-  }
-};
-///////////////////////////////////////////////////////////////////////////////////////////
+            try {
+              await uploadPost(formData); 
+              setNewContent('');
+              setSelectedFile(null);
+              setShowPopup(false);
+              setPage(1);
+              setHasMore(true);
+              setIsInitialLoad(true);
+            } catch (err) {
+              console.error("Error uploading post:", err);
+            }
+          };
+
+          const handleLikeUpdate = (postId, newIsLiked) => {
+              setLikedPostIds(prev => {
+                const newSet = new Set(prev);
+                if (newIsLiked) {
+                  newSet.add(postId);
+                } else {
+                  newSet.delete(postId);
+                }
+                return newSet;
+              });
+            };
+
   return (
     <div className="main-content">
       <div className="post-form-container">
@@ -132,6 +155,8 @@ export function HomePage() {
         {posts.map(post => (
           <Post
             className="post" key={post.id} post={post}
+            isInitiallyLiked={likedPostIds.has(post.id)}
+            onLikeUpdate={handleLikeUpdate}
             onUpdate={() => {
               setPage(1);
               setHasMore(true);

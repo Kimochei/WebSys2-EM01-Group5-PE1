@@ -5,16 +5,12 @@ by Group 5 of BM3 - ITS122L
 
 ## Members:
 
-- Bonzi James Mendez
+- Bonzi James Mendez ([@dead1newbie](https://github.com/dead1newbie))
 - Christian de Gala ([@unawarespecs](https://github.com/unawarespecs))
-- Clark Paglinawan
+- Clark Paglinawan ([@CLAKyx](https://github.com/CLAKyx))
 - Kim Miguel Sobrepeña ([@Kimochei](https://github.com/Kimochei))
 - Mark Branon Acpal ([@DefnotMark28](https://github.com/DefnotMark28))
-- Richard Pua
-
-> pamove na lang github handles nyo near your names above, ty 
-
-- other members: [@dead1newbie](https://github.com/dead1newbie) & [@RitsuPretzy](https://github.com/@RitsuPretzy)
+- Richard Pua [@RitsuPretzy](https://github.com/@RitsuPretzy)
 
 ## Purpose
 
