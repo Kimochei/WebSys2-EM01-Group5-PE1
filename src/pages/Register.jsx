@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import './SignIn.css'; // Import the same CSS file used by the sign-in page
+import './Signin.css'; // Import the same CSS file used by the sign-in page
 
 export function Register() {
   // Your existing state and logic for registration

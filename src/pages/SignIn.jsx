@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import './SignIn.css';
+import './Signin.css';
 import G5Logo from '../assets/G5Logo.png';
 
 export function SignIn() {
