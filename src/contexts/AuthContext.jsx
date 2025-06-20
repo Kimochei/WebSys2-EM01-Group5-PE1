@@ -139,11 +139,11 @@ const updateProfilePicture = async (file) => {
     return data;
   };
 
-  const uploadPost = async (content) => {
-    const formData = new URLSearchParams();
-    formData.append('content', content);
+  // CORRECTED uploadPost FUNCTION
+  const uploadPost = async (formData) => {
+    // This now correctly expects a FormData object and sends it with the right header.
     const { data } = await api.post('/post', formData, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
     return data;
   };
