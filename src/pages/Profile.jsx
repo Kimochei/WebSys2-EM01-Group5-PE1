@@ -1,10 +1,10 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useEffect, useState, useCallback } from 'react';
-import { Post } from '../components/Post'; // Import the Post component
+import { Post } from '../components/Post';
 import { BounceLoader } from 'react-spinners';
 import './Profile.css';
 
-// Modal Component (Your existing code - UNTOUCHED)
+// Modal Component 
 function EditProfileModal({ user, onClose }) {
   const { updateProfilePicture } = useAuth();
   const [profilePic, setProfilePic] = useState(null);
@@ -75,7 +75,7 @@ function EditProfileModal({ user, onClose }) {
   );
 }
 
-// Main Profile Page Component (UPDATED to use the Post component)
+// Main Profile Page Component 
 export function Profile() {
   const { user, getPosts, getPostsLikedByUser, getUserReplies } = useAuth();
   const [activeTab, setActiveTab] = useState('threads');
@@ -90,7 +90,6 @@ export function Profile() {
     document.title = user ? `${user.fName}'s Profile` : 'Profile';
   }, [user]);
 
-  // Fetches all posts and filters them for the current user
   const fetchUserPosts = useCallback(async () => {
     if (!user) return;
     setLoading(true);
@@ -98,7 +97,9 @@ export function Profile() {
       let allPosts = [];
       let page = 1;
       let hasMore = true;
-      while(hasMore) {
+      const MAX_PAGES_TO_FETCH = 5;
+
+      while(hasMore && page <= MAX_PAGES_TO_FETCH) {
         const fetchedPosts = await getPosts(page);
         if (fetchedPosts.length === 0) {
           hasMore = false;
@@ -121,25 +122,68 @@ export function Profile() {
     if (!user) return;
     setLoading(true);
     try {
-      const data = await getPostsLikedByUser();
-      setLikedPosts(data);
+      let allPosts = [];
+      let page = 1;
+      let hasMore = true;
+      const MAX_PAGES_TO_FETCH = 10;
+      while (hasMore && page <= MAX_PAGES_TO_FETCH) {
+          const posts = await getPosts(page);
+          if (posts.length === 0) {
+              hasMore = false;
+          } else {
+              allPosts = [...allPosts, ...posts];
+              page++;
+          }
+      }
+      const postsMap = new Map(allPosts.map(post => [post.id, post]));
+      const likedData = await getPostsLikedByUser();
+      const enrichedLikedPosts = likedData
+        .map(like => {
+            const fullPostData = postsMap.get(like.posts.id);
+            return { ...like, posts: fullPostData || like.posts };
+        })
+        .filter(like => like.posts.users);
+      setLikedPosts(enrichedLikedPosts);
     } catch (err) {
       console.error("Failed to fetch liked posts:", err);
     }
     setLoading(false);
-  }, [user, getPostsLikedByUser]);
+  }, [user, getPosts, getPostsLikedByUser]);
 
   const fetchUserReplies = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const data = await getUserReplies();
-      setUserReplies(data);
+      let allPosts = [];
+      let page = 1;
+      let hasMore = true;
+      const MAX_PAGES_TO_FETCH = 10;
+      while (hasMore && page <= MAX_PAGES_TO_FETCH) {
+          const posts = await getPosts(page);
+          if (posts.length === 0) {
+              hasMore = false;
+          } else {
+              allPosts = [...allPosts, ...posts];
+              page++;
+          }
+      }
+      const postsMap = new Map(allPosts.map(post => [post.id, post]));
+
+      const repliesData = await getUserReplies();
+
+      const enrichedReplies = repliesData
+        .map(reply => {
+          const fullPostData = postsMap.get(reply.posts.id);
+          return { ...reply, posts: fullPostData || reply.posts };
+        })
+        .filter(reply => reply.posts.users); // Ensure we only show replies to posts we could find
+
+      setUserReplies(enrichedReplies);
     } catch (err) {
       console.error("Failed to fetch user replies:", err);
     }
     setLoading(false);
-  }, [user, getUserReplies]);
+  }, [user, getPosts, getUserReplies]);
 
   useEffect(() => {
     if (activeTab === 'threads') {
@@ -161,7 +205,6 @@ export function Profile() {
     );
   }
   
-  // Renders the content for the selected tab using the Post component
   const renderContent = () => {
     if (loading) {
       return (
@@ -180,7 +223,6 @@ export function Profile() {
         );
       case 'likes':
         return likedPosts.length > 0 ? (
-          // The API for liked posts doesn't include the original poster's details, so we pass a placeholder.
           likedPosts.map(like => <Post key={`like-${like.posts.id}`} post={like.posts} />)
         ) : (
           <div className="empty-tab-message">You haven't liked any posts yet.</div>
@@ -190,7 +232,6 @@ export function Profile() {
           userReplies.map(reply => (
             <div key={`reply-${reply.id}`} className="reply-in-profile">
               <p className="reply-context-text">You replied to this post:</p>
-              {/* Similar to likes, the original poster's details are missing from the API response here */}
               <Post post={reply.posts} />
               <div className="reply-content-bubble">
                 <p><strong>Your reply:</strong> {reply.content}</p>

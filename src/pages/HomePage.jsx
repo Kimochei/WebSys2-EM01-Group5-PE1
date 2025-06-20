@@ -6,12 +6,13 @@ import { useInView } from 'react-intersection-observer';
 import './HomePage.css';
 
 export function HomePage() {
-  const { getPosts, uploadPost } = useAuth();
+  const { getPosts, uploadPost, getPostsLikedByUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const [newContent, setNewContent] = useState('');
   const [postsLoaded, setPostsLoaded] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [likedPostIds, setLikedPostIds] = useState(new Set());
 
   // page tracker for infinite scrolling (like threads/twitter)
   const [page, setPage] = useState(1);
@@ -22,6 +23,16 @@ export function HomePage() {
     document.body.style.overflow = 'auto';
     document.title = 'Home';
   }, []);
+
+  const fetchLikedPosts = useCallback(async () => {
+    try {
+      const likedPostsData = await getPostsLikedByUser();
+      const ids = new Set(likedPostsData.map(like => like.posts.id));
+      setLikedPostIds(ids);
+    } catch (error) {
+      console.error('Error fetching liked posts:', error);
+    }
+  }, [getPostsLikedByUser]);
 
   const loadPosts = useCallback(async (pageNum) => {
     setPostsLoaded(true);
@@ -54,10 +65,11 @@ export function HomePage() {
   // initial post loads (page 1)
   useEffect(() => {
     if (isInitialLoad) {
+      fetchLikedPosts();
       loadPosts(1);
       setIsInitialLoad(false);
     }
-  }, [isInitialLoad, loadPosts]);
+  }, [isInitialLoad, loadPosts, fetchLikedPosts]);
 
   // for infinite scrolling
   useEffect(() => {
@@ -76,10 +88,21 @@ export function HomePage() {
     setNewContent('');
     setShowPopup(false);
 
-    // reset to initial state and reload first page
     setPage(1);
     setHasMore(true);
     setIsInitialLoad(true);
+  };
+  
+  const handleLikeUpdate = (postId, newIsLiked) => {
+    setLikedPostIds(prev => {
+      const newSet = new Set(prev);
+      if (newIsLiked) {
+        newSet.add(postId);
+      } else {
+        newSet.delete(postId);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -103,6 +126,8 @@ export function HomePage() {
         {posts.map(post => (
           <Post
             className="post" key={post.id} post={post}
+            isInitiallyLiked={likedPostIds.has(post.id)}
+            onLikeUpdate={handleLikeUpdate}
             onUpdate={() => {
               setPage(1);
               setHasMore(true);
